@@ -16,7 +16,8 @@ const MyMovies=sequelize.define('MyMovies',{
     metascore:{type:DataTypes.STRING},
     summaryen:{type:DataTypes.TEXT},
     summaryru:{type:DataTypes.TEXT},
-    rate:{type:DataTypes.DOUBLE}
+    rate:{type:DataTypes.DOUBLE},
+    url:{type:DataTypes.TEXT}
 });
 
 const MySeries=sequelize.define('MySeries',{
@@ -34,10 +35,11 @@ const MySeries=sequelize.define('MySeries',{
     metascore:{type:DataTypes.STRING},
     summaryen:{type:DataTypes.TEXT},
     summaryru:{type:DataTypes.TEXT},
-    rate:{type:DataTypes.DOUBLE}
+    rate:{type:DataTypes.DOUBLE},
+    url:{type:DataTypes.TEXT}
 });
 
-const MyGame=sequelize.define('MyGame',{
+const MyGame=sequelize.define('MyGames',{
     id:{type:DataTypes.INTEGER, autoIncrement:true, primaryKey:true},
     nameen:{type:DataTypes.STRING, unique:true},
     nameru:{type:DataTypes.STRING, unique:true},
@@ -47,7 +49,8 @@ const MyGame=sequelize.define('MyGame',{
     developer:{type:DataTypes.STRING},
     summaryen:{type:DataTypes.TEXT},
     summaryru:{type:DataTypes.TEXT},
-    rate:{type:DataTypes.DOUBLE}
+    rate:{type:DataTypes.DOUBLE},
+    url:{type:DataTypes.TEXT}
 });
 
 const MyBooks=sequelize.define('MyBooks',{
@@ -61,7 +64,8 @@ const MyBooks=sequelize.define('MyBooks',{
     autorru:{type:DataTypes.STRING},
     summaryen:{type:DataTypes.TEXT},
     summaryru:{type:DataTypes.TEXT},
-    rate:{type:DataTypes.DOUBLE}
+    rate:{type:DataTypes.DOUBLE},
+    url:{type:DataTypes.TEXT}
 });
 
 const MyUsers=sequelize.define('MyUsers',{
