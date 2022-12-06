@@ -73,8 +73,18 @@ const MyUsers=sequelize.define('MyUsers',{
     name:{type:DataTypes.STRING, unique:true},
     email:{type:DataTypes.STRING},
     password:{type:DataTypes.STRING},
-    role:{type:DataTypes.STRING}
+    role:{type:DataTypes.STRING, defaultValue:"USER"},
+    blocked:{type:DataTypes.BOOLEAN,defaultValue:false}
 });
+
+const MyReview=sequelize.define('MyReview', {
+    id:{type:DataTypes.INTEGER, autoIncrement:true, primaryKey:true},
+    name:{type:DataTypes.STRING},
+    rate:{type:DataTypes.DOUBLE},
+    useremail:{type:DataTypes.STRING},
+    date:{type:DataTypes.STRING},
+    text:{type:DataTypes.TEXT},
+})
 
 const MyComments=sequelize.define('MyComments', {
     id:{type:DataTypes.INTEGER, autoIncrement:true, primaryKey:true},
@@ -84,4 +94,4 @@ const MyComments=sequelize.define('MyComments', {
     text:{type:DataTypes.TEXT},
 })
 
-module.exports={MyMovies, MySeries, MyGame, MyBooks,MyUsers, MyComments};
+module.exports={MyMovies, MySeries, MyGame, MyBooks,MyUsers, MyComments, MyReview};
