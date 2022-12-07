@@ -77,13 +77,18 @@ const MyUsers=sequelize.define('MyUsers',{
     blocked:{type:DataTypes.BOOLEAN,defaultValue:false}
 });
 
-const MyReview=sequelize.define('MyReview', {
+const MyReview=sequelize.define('MyReviews', {
     id:{type:DataTypes.INTEGER, autoIncrement:true, primaryKey:true},
     name:{type:DataTypes.STRING},
+    title:{type:DataTypes.STRING},
+    groupn:{type:DataTypes.STRING},
+    teg:{type:DataTypes.STRING},
+    url:{type:DataTypes.TEXT},
     rate:{type:DataTypes.DOUBLE},
     useremail:{type:DataTypes.STRING},
     date:{type:DataTypes.STRING},
     text:{type:DataTypes.TEXT},
+    comment:{type:DataTypes.TEXT}
 })
 
 const MyComments=sequelize.define('MyComments', {
