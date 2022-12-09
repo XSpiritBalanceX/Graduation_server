@@ -87,6 +87,7 @@ const MyReview=sequelize.define('MyReviews', {
     useremail:{type:DataTypes.STRING},
     date:{type:DataTypes.STRING},
     text:{type:DataTypes.TEXT},
+    namepict:{type:DataTypes.TEXT},
 })
 
 const MyComments=sequelize.define('MyComments', {

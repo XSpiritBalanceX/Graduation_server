@@ -6,7 +6,7 @@ const memoStorage=multer.memoryStorage()
 const upload=multer({memoStorage})
 
 reviewRouter.get('/userreview', reviewController.getUserReview);
-reviewRouter.post('/postreview', upload.single('pic'), reviewController.createReview);
+reviewRouter.post('/postpic', upload.single('pic'), reviewController.createReview);
 reviewRouter.get('/picture', reviewController.getPicture)
 
 
