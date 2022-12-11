@@ -93,8 +93,9 @@ const MyReview=sequelize.define('MyReviews', {
 
 const MyComments=sequelize.define('MyComments', {
     id:{type:DataTypes.INTEGER, autoIncrement:true, primaryKey:true},
-    name:{type:DataTypes.STRING},
-    user:{type:DataTypes.STRING},
+    namereview:{type:DataTypes.STRING},
+    nameuser:{type:DataTypes.STRING},
+    useremail:{type:DataTypes.STRING},
     date:{type:DataTypes.STRING},
     text:{type:DataTypes.TEXT},
 })

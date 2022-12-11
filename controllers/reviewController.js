@@ -1,5 +1,6 @@
 const {MyReview}=require('../dataBase/descriptionDB');
 const {MyUsers}=require('../dataBase/descriptionDB');
+const {MyComments}=require('../dataBase/descriptionDB');
 const ApiError = require('../error/ApiError');
 const {ref,uploadBytes, listAll}=require('firebase/storage')
 const storage=require('../firebase')
@@ -50,14 +51,37 @@ class ReviewController{
             })
             .catch(err=>console.log(err.message))
             const today=new Date().toLocaleString();
-            let userName=await MyUsers.findOne({where:{email:useremail}, attributes:['name']}) 
-            await MyReview.create({name,rate,useremail,date:today,text,"createdAt":new Date(), "updatedAt":new Date(),title, groupn, teg, namepict:urlPict, nameuser:userName});
+            let userName=await MyUsers.findOne({where:{email:useremail}, attributes:['name']});
+            await MyReview.create({name,rate,useremail,date:today,text,"createdAt":new Date(), "updatedAt":new Date(),title, groupn, teg, namepict:urlPict, nameuser:userName.dataValues.name});
                       
             return res.json({message:'You have successfully written your review'});
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
         }
-    }   
+    }  
+    
+    async createComment(req, res, next){
+        try{
+            let {namereview,useremail, text }=req.body;
+            const today=new Date().toLocaleString();
+            let userName=await MyUsers.findOne({where:{email:useremail}, attributes:['name']});
+            await MyComments.create({namereview,useremail,date:today,text,"createdAt":new Date(), "updatedAt":new Date(), nameuser:userName.dataValues.name});
+            return res.json({message:'Published'});
+        }catch(err){
+            return next(ApiError.internal('Something went wrong, please try again'));
+        }
+    }  
+    async getComments(req, res, next){
+        try{
+            /* let {namereview}=req.query;  
+            console.log(req.query)        
+            let comments=await MyComments.findAll({attributes:['namereview']===namereview});  */ 
+            let comments=await MyComments.findAll(); 
+            return res.json(comments);
+        }catch(err){
+            return next(ApiError.internal('Something went wrong, please try again'));
+        }
+    } 
 
     async getPicture(req, res, next){
         try{

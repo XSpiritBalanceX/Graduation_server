@@ -2,10 +2,11 @@ const {MyUsers}=require('../dataBase/descriptionDB');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const ApiError=require('../error/ApiError');
+const passport=require('passport');
 
 const generateJwt=(id,email, role)=>{
     return jwt.sign({id,email, role}, process.env.SECRET_KEY, {expiresIn:'24h'});
-  }
+}
 
 
 class AuthController{
@@ -52,9 +53,18 @@ class AuthController{
        }  
    }
 
-   async check(req, res, next){
-     const token=generateJwt(req.user.id, req.user.email, req.user.role);
-     return res.json({token})
+   async auth(req, res, next){
+      const {email, password}=req.body;
+      let user=await MyUsers.findOne({where:{email}});
+      if(!user){
+        return next(ApiError.internal('User is not found'));
+      }
+      let comparePassword=bcrypt.compareSync(password, user.password);
+      if(!comparePassword){
+        return next(ApiError.internal('Wrong password entered'));
+      }
+      const token=generateJwt(user.id,user.email);
+      
    }
 
 }

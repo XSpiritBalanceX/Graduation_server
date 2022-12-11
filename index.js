@@ -5,10 +5,14 @@ const cors=require('cors')
 const router=require('./routes/index')
 const PORT=5000 ||process.env.PORT
 const errorHandler=require('./middleware/ErrorHandlingMiddleware')
+const passport = require('passport');
 
 
 const app=express()
 
+app.use(passport.initialize());
+app.use(passport.session());
+require('./passport')(passport);
 app.use(cors())
 app.use(express.json())
 app.use('/api', router)
