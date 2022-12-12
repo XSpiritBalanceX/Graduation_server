@@ -3,7 +3,7 @@ const reviewRouter=new Router();
 const reviewController=require('../controllers/reviewController');
 const multer=require('multer');
 const memoStorage=multer.memoryStorage()
-const upload=multer({memoStorage})
+const upload=multer({memoStorage});
 
 reviewRouter.get('/userreview', reviewController.getUserReview);
 reviewRouter.get('/itemreview', reviewController.getItemReview);

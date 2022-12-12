@@ -11,8 +11,7 @@ class ReviewController{
         try{
             let {useremail}=req.query;
             let userReview=await MyReview.findAll({where:{useremail}});
-                      
-            return res.json(userReview);
+            return res.json(userReview); 
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
         }

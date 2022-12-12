@@ -47,25 +47,21 @@ class AuthController{
            }
            const isBlocked=user.blocked
            const token=generateJwt(user.id,user.email)
-           return res.json({token,isBlocked, message:'Successfully'})
+           return res.json({token,isBlocked, email:user.email, message:'Successfully'})
        }catch(e){
          return next(ApiError.internal('Something went wrong, please try again'));
        }  
    }
 
-   async auth(req, res, next){
-      const {email, password}=req.body;
-      let user=await MyUsers.findOne({where:{email}});
-      if(!user){
-        return next(ApiError.internal('User is not found'));
-      }
-      let comparePassword=bcrypt.compareSync(password, user.password);
-      if(!comparePassword){
-        return next(ApiError.internal('Wrong password entered'));
-      }
-      const token=generateJwt(user.id,user.email);
-      
+   async check(req, res, next){
+     const token=generateJwt(req.user.id, req.user.email, req.user.password, req.user.role);
+     res.json({token})
    }
+
+   async test(req, res, next){
+    console.log(req)
+    
+  }
 
 }
 
