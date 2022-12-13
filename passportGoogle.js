@@ -2,38 +2,25 @@ const passport=require('passport');
 const GoogleStrategy =require('passport-google-oauth20').Strategy;
 require('dotenv').config();
 const {MyUsers}=require('./dataBase/descriptionDB')
-const GOOGLE_CALLBACK_URL='http://localhost:5000/api/user/auth/google/callback';
 
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret:process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL:GOOGLE_CALLBACK_URL
+    callbackURL:'http://localhost:5000/auth/google/callback'
 },
     async function(accessToken, refreshToken, profile, done) {
-        const account=profile._json;
-        try{
-            let user=await MyUsers.findOne({where:{email: profile.emails[0].value}});
+          let user=await MyUsers.findOne({where:{email: profile._json.email}});
             if(!user){
-                await MyUsers.create({email: profile.emails[0].value,name:profile._json.name,  })
+                await MyUsers.create({email: profile._json.email,name:profile._json.name,  })
             }
-            let currenUser={
-                id:user.dataValues.id,
-                name:user.dataValues.name,
-                email:user.dataValues.email,
-                blocked:user.dataValues.blocked,
-                role:user.dataValues.role
-            }
-           done(null, currenUser)
-        }catch(err){
-            done(err)
-        }
+            return done(null, user);
     }
 ))
 
-passport.serializeUser((user, done)=>{
+ passport.serializeUser((user, done)=>{
     done(null,user)
 });
 
 passport.deserializeUser((user, done)=>{
     done(null,user);
-})
+}) 

@@ -6,24 +6,28 @@ const router=require('./routes/index')
 const PORT=5000 ||process.env.PORT
 const errorHandler=require('./middleware/ErrorHandlingMiddleware')
 const passport=require('passport')
-const session=require('express-session')
-require('./passportGoogle');
+const passportSetup=require('./passportGoogle')
+const cookieSession=require('cookie-session');
+const authGoogle=require('./routes/authGoogle')
 
-const app=express()
+const app=express();
+
+app.use(cookieSession({
+    name:'session',
+    keys:['helen'],
+    maxAge:24*60*60*100
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(cors({
-    credentials:true,
-    origin:'*'
-}))
-app.use(express.json())
-app.use('/api', router)
-app.use(errorHandler)
-app.use(session({
-    secret:'mysecret',
-    resave:false,
-    saveUninitialized:false
-}))
-app.use(passport.initialize())
-app.use(passport.session())
+    origin:'http://localhost:3000',
+    methods:'GET, POST, PUT, DELETE',
+    credentials:true
+}));
+app.use(express.json());
+app.use('/api', router);
+app.use('/auth', authGoogle)
+app.use(errorHandler);
 
 const start=async ()=>{
     try{

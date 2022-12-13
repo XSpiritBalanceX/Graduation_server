@@ -4,8 +4,8 @@ const jwt=require('jsonwebtoken');
 const ApiError=require('../error/ApiError');
 const passport=require('passport');
 
-const generateJwt=(id,email, role)=>{
-    return jwt.sign({id,email, role}, process.env.SECRET_KEY, {expiresIn:'24h'});
+const generateJwt=(id,email,name, role)=>{
+    return jwt.sign({id,email,name, role}, process.env.SECRET_KEY, {expiresIn:'24h'});
 }
 
 
@@ -24,7 +24,7 @@ class AuthController{
             const hashPassword= await bcrypt.hash(password, 5);
             const today=new Date().toLocaleString();
             const user=await MyUsers.create({name, email, password:hashPassword,role, data_reg:today, data_log:today, "createdAt":new Date(), "updatedAt":new Date()});
-            const token=generateJwt(user.id,user.email, user.role);
+            const token=generateJwt(user.id,user.email, user.name,user.role);
            return res.json({token,message:'You have successfully registration!'});
         }catch(e){
             return next(ApiError.internal('Something went wrong, please try again'));
@@ -46,15 +46,15 @@ class AuthController{
                return next(ApiError.internal('Wrong password entered'));
            }
            const isBlocked=user.blocked
-           const token=generateJwt(user.id,user.email)
-           return res.json({token,isBlocked, email:user.email, message:'Successfully'})
+           const token=generateJwt(user.id,user.email, user.name,user.role)
+           return res.json({token,isBlocked, email:user.email, name:user.name,message:'Successfully'})
        }catch(e){
          return next(ApiError.internal('Something went wrong, please try again'));
        }  
    }
 
    async check(req, res, next){
-     const token=generateJwt(req.user.id, req.user.email, req.user.password, req.user.role);
+     const token=generateJwt(req.user.id, req.user.email, req.user.name,req.user.role);
      res.json({token})
    }
 
