@@ -21,7 +21,12 @@ authRouterGoogle.get('/logout', (req,res)=>{
 })
 authRouterGoogle.get('/google', passport.authenticate('google', {scope:['profile', 'email']}));
 authRouterGoogle.get('/google/callback', passport.authenticate('google',{
-    successRedirect:'http://localhost:3000/mypage',
+    successRedirect:'http://localhost:3000/',
+    failureRedirect:'/login/failed'
+}))
+authRouterGoogle.get('/github', passport.authenticate('github', {scope:['user:email' ]}));
+authRouterGoogle.get('/github/callback', passport.authenticate('github',{
+    successRedirect:'http://localhost:3000/',
     failureRedirect:'/login/failed'
 }))
 
