@@ -83,12 +83,13 @@ const MyReview=sequelize.define('MyReviews', {
     title:{type:DataTypes.STRING},
     groupn:{type:DataTypes.STRING},
     teg:{type:DataTypes.STRING},
-    rate:{type:DataTypes.DOUBLE},
+    rate:{type:DataTypes.TEXT},
     useremail:{type:DataTypes.STRING},
     date:{type:DataTypes.STRING},
     text:{type:DataTypes.TEXT},
     namepict:{type:DataTypes.TEXT},
     nameuser:{type:DataTypes.TEXT},
+    ratreview:{type:DataTypes.TEXT,defaultValue:0}
 })
 
 const MyComments=sequelize.define('MyComments', {

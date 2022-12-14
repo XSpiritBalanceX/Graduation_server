@@ -81,6 +81,22 @@ class ReviewController{
             return next(ApiError.internal('Something went wrong, please try again'));
         }
     } 
+    async setRating(req, res, next){
+        try{
+            let {title, ratreview}=req.body;
+            let rating=await MyReview.findOne({where:{title}});
+            let arrReview=[]
+            /* if(rating.dataValues.ratreview!=0){
+
+            } */
+            arrReview.push(ratreview)
+            //rating.dataValues.ratreview=arrReview;
+            //await rating.save()
+            //res.json({rating}) 
+        }catch(err){
+            return next(ApiError.internal('Something went wrong, please try again'));
+        }
+    } 
 
     async getPicture(req, res, next){
         try{

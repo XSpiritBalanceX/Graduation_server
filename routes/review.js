@@ -11,7 +11,8 @@ reviewRouter.get('/onereview', reviewController.getOneReview);
 reviewRouter.post('/comment', reviewController.createComment);
 reviewRouter.get('/getcomments', reviewController.getComments);
 reviewRouter.post('/postpic', upload.single('pic'), reviewController.createReview);
-reviewRouter.get('/picture', reviewController.getPicture)
+reviewRouter.get('/picture', reviewController.getPicture);
+reviewRouter.post('/setrating', reviewController.setRating);
 
 
 module.exports=reviewRouter;

@@ -24,20 +24,16 @@ authRouterGoogle.get('/google/callback', passport.authenticate('google',{
     successRedirect:'http://localhost:3000/',
     failureRedirect:'/login/failed'
 }))
-authRouterGoogle.get('/facebook', passport.authenticate('facebook',{scope:['profile', 'email']}));
-authRouterGoogle.get('/facebook/callback', passport.authenticate('facebook',{
-    successRedirect:'http://localhost:3000/',
-    failureRedirect:'/login/failed'
-}))
-authRouterGoogle.get('/github', passport.authenticate('github',{scope: [ 'user:email' ]}));
-authRouterGoogle.get('/github/callback', passport.authenticate('github',{
+authRouterGoogle.get('/facebook', passport.authenticate('facebook',{scope:['email']}));
+authRouterGoogle.get('/redirect/facebook', passport.authenticate('facebook',{
     successRedirect:'http://localhost:3000/',
     failureRedirect:'/login/failed'
 }))
 authRouterGoogle.get('/discord', passport.authenticate('discord'));
-authRouterGoogle.get('/discord/callback', passport.authenticate('discord',{
-    successRedirect:'http://localhost:3000/',
+authRouterGoogle.get('/discord/redirect', passport.authenticate('discord',{
     failureRedirect:'/login/failed'
-}))
+}), function(req, res){
+    res.redirect('http://localhost:3000/')
+})
 
 module.exports=authRouterGoogle;

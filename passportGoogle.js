@@ -1,14 +1,11 @@
 const passport=require('passport');
 const GoogleStrategy =require('passport-google-oauth20').Strategy;
 const FacebookStrategy =require('passport-facebook').Strategy;
-const GithubStrategy =require('passport-github2').Strategy;
 const DiscordStrategy =require('passport-discord').Strategy;
 require('dotenv').config();
 const {MyUsers}=require('./dataBase/descriptionDB');
 const GOOGLE_CLIENT_ID=process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET=process.env.GITHUB_CLIENT_SECRET;
-const GITHUB_CLIENT_ID=process.env.GITHUB_CLIENT_ID;
-const GITHUB_CLIENT_SECRET=process.env.GITHUB_CLIENT_SECRET;
+const GOOGLE_CLIENT_SECRET=process.env.GOOGLE_CLIENT_SECRET;
 const FACEBOOK_CLIENT_ID=process.env.FACEBOOK_CLIENT_ID;
 const FACEBOOK_CLIENT_SECRET=process.env.FACEBOOK_CLIENT_SECRET;
 const DISCORD_CLIENT_ID=process.env.DISCORD_CLIENT_ID;
@@ -26,57 +23,42 @@ passport.use(new GoogleStrategy({
             }
             return done(null, user);
     }
-))
+)) 
+
 
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_CLIENT_ID,
     clientSecret:FACEBOOK_CLIENT_SECRET,
-    callbackURL:'http://localhost:5000/auth/facebook/callback',
-    profileFields: ['id', 'emails', 'name']
+    callbackURL:'http://localhost:5000/auth/redirect/facebook',
+    profileFields: ['id', 'displayName', 'name', 'emails']
 },
     async function(accessToken, refreshToken, profile, done) {
-        console.log(profile)
-          /* let user=await MyUsers.findOne({where:{email: profile._json.email}});
+          let user=await MyUsers.findOne({where:{email: profile._json.email}});
             if(!user){
                 await MyUsers.create({email: profile._json.email,name:profile._json.name,  })
             }
-            return done(null, user); */
+            return done(null, user);
     }
 ))
 
-passport.use(new GithubStrategy({
-    clientID: GITHUB_CLIENT_ID,
-    clientSecret:GITHUB_CLIENT_SECRET,
-    callbackURL:'http://localhost:5000/auth/github/callback',
-    profileFields: ['id', 'emails']
-},
-    async function(accessToken, refreshToken, profile, done) {
-        console.log(profile.emails)
-          /* let user=await MyUsers.findOne({where:{email: profile._json.email}});
-            if(!user){
-                await MyUsers.create({email: profile._json.email,name:profile._json.name,  })
-            }
-            return done(null, user); */
-    }
-))
-
-const scopes = ['identify', 'email', 'guilds', 'guilds.join'];
+const scopes = ['identify', 'email',  'guilds.join'];
 
 passport.use(new DiscordStrategy({
     clientID: DISCORD_CLIENT_ID,
     clientSecret:DISCORD_CLIENT_SECRET,
-    callbackURL:'http://localhost:5000/auth/discord/callback',
+    callbackURL:'http://localhost:5000/auth/discord/redirect',
     scope: scopes
 },
     async function(accessToken, refreshToken, profile, done) {
-        console.log(profile)
-          /* let user=await MyUsers.findOne({where:{email: profile._json.email}});
+           let user=await MyUsers.findOne({where:{email: profile.email}});
             if(!user){
-                await MyUsers.create({email: profile._json.email,name:profile._json.name,  })
+                await MyUsers.create({email: profile.email,name:profile.username,  })
             }
-            return done(null, user); */
+            return done(null, user); 
     }
 ))
+
+
 
  passport.serializeUser((user, done)=>{
     done(null,user)
