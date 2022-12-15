@@ -88,8 +88,7 @@ const MyReview=sequelize.define('MyReviews', {
     date:{type:DataTypes.STRING},
     text:{type:DataTypes.TEXT},
     namepict:{type:DataTypes.TEXT},
-    nameuser:{type:DataTypes.TEXT},
-    ratreview:{type:DataTypes.TEXT,defaultValue:0}
+    nameuser:{type:DataTypes.TEXT}
 })
 
 const MyComments=sequelize.define('MyComments', {
@@ -101,4 +100,12 @@ const MyComments=sequelize.define('MyComments', {
     text:{type:DataTypes.TEXT},
 })
 
-module.exports={MyMovies, MySeries, MyGame, MyBooks,MyUsers, MyComments, MyReview};
+const MyRating=sequelize.define('rating', {
+    id:{type:DataTypes.INTEGER, autoIncrement:true, primaryKey:true},
+    namereview:{type:DataTypes.STRING},
+    useremail:{type:DataTypes.STRING},
+    value:{type:DataTypes.INTEGER, defaultValue:0},
+    like:{type:DataTypes.BOOLEAN, defaultValue:false},
+})
+
+module.exports={MyMovies, MySeries, MyGame, MyBooks,MyUsers, MyComments, MyReview, MyRating};

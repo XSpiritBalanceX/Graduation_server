@@ -1,6 +1,4 @@
-const {MyReview}=require('../dataBase/descriptionDB');
-const {MyUsers}=require('../dataBase/descriptionDB');
-const {MyComments}=require('../dataBase/descriptionDB');
+const {MyReview, MyUsers, MyComments, MyRating}=require('../dataBase/descriptionDB');
 const ApiError = require('../error/ApiError');
 const {ref,uploadBytes, listAll}=require('firebase/storage')
 const storage=require('../firebase')
@@ -30,7 +28,9 @@ class ReviewController{
     async getOneReview(req, res, next){
         try{
             let {id}=req.query;
-            let oneReview=await MyReview.findAll({where:{id}});    
+            let oneReview=await MyReview.findAll({where:{id}}); 
+            /* let test=await MyRating.findAll({where:{namereview:oneReview.dataValues.title}})
+           console.log(test) */   
             return res.json(oneReview);
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
@@ -83,16 +83,14 @@ class ReviewController{
     } 
     async setRating(req, res, next){
         try{
-            let {title, ratreview}=req.body;
-            let rating=await MyReview.findOne({where:{title}});
-            let arrReview=[]
-            /* if(rating.dataValues.ratreview!=0){
-
-            } */
-            arrReview.push(ratreview)
-            //rating.dataValues.ratreview=arrReview;
-            //await rating.save()
-            //res.json({rating}) 
+            let {useremail, value, namereview}=req.body;
+            let ratingUser=await MyRating.findOne({where:{useremail, namereview}});
+             if(!ratingUser){
+                await MyRating.create({namereview,useremail, value, "createdAt":new Date(), "updatedAt":new Date()})
+            }
+            ratingUser.value=value;
+            await ratingUser.save()
+            res.json({message:'OK'}) 
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
         }
