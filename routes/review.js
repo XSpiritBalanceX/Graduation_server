@@ -13,6 +13,7 @@ reviewRouter.get('/getcomments', reviewController.getComments);
 reviewRouter.post('/postpic', upload.single('pic'), reviewController.createReview);
 reviewRouter.get('/picture', reviewController.getPicture);
 reviewRouter.post('/setrating', reviewController.setRating);
-
+reviewRouter.post('/editreview',upload.single('pic'), reviewController.editReview);
+reviewRouter.post('/changeTitle', reviewController.changeTitleRating);
 
 module.exports=reviewRouter;
