@@ -120,7 +120,10 @@ class ReviewController{
         try{
             let {id,title, groupn, teg,rate, text }=req.body;
             let file=req.file;
-            let editReview=await MyReview.findOne({where:{id}});                    
+            let editReview=await MyReview.findOne({where:{id}}); 
+            if(editReview.title!==title){
+                await MyRating.update({namereview:title}, {where:{namereview:editReview.title}})
+            }               
             if(file!==undefined){
                 const imageRef=ref(storage, file.originalname);
                 let urlPict=`https://firebasestorage.googleapis.com/v0/b/${imageRef._location.bucket}/o/${file.originalname}?alt=media`
@@ -142,34 +145,22 @@ class ReviewController{
                 editReview.text=text;
             }
              
-            await editReview.save();  
-            
-
-            /* let changeRating=await MyRating.findAll({where:{namereview:changeTitle}, attributes:['namereview']})
-                changeRating.forEach(el=>{
-                    el.namereview=title;
-                })
-             await changeRating.save();  */         
+            await editReview.save();        
             return res.json({ message:'You have successfully changed your review'});
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
         }
     }  
-    async changeTitleRating(req, res, next){
+    async deleteReview(req, res, next){
         try{
-            let {prevTitle, newTitle}=req.body;
-            let changeRatingTitle=await MyRating.findAll({where:{namereview:prevTitle}})
-            changeRatingTitle.namereview=newTitle;
-            /* changeRatingTitle.forEach(el=>{
-                console.log(el.namereview)
-                el
-            }) */
-            await changeRatingTitle.save();
-            res.json({prevTitle, newTitle})
+            let {id, title}=req.body;
+            await MyRating.destroy({where:{namereview:title}});
+            await MyReview.destroy({where:{id}})
+            return res.json({message:`Review ${title} was deleted`});
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
         }
-    }
+    } 
     
 
     async getPicture(req, res, next){
