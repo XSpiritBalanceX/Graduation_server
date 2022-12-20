@@ -34,7 +34,6 @@ authRouterGoogle.get('/discord/redirect', passport.authenticate('discord',{
     failureRedirect:'/login/failed',
 }), function(req, res){
     const token=generateJwt(req.user.id,req.user.email,req.user.name,req.user.role)
-    res.status(200).json({message:'successfull', user:req.user.email, token, name:req.user.name})
     res.redirect('http://localhost:3000/'+token)
 })
 
