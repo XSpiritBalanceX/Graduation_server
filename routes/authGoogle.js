@@ -3,7 +3,7 @@ const authRouterGoogle=new Router();
 const passport=require('passport');
 const jwt=require('jsonwebtoken');
 const generateJwt=(id,email,name, role)=>{
-    return jwt.sign({id,email, role}, process.env.SECRET_KEY, {expiresIn:'24h'});
+    return jwt.sign({id,email,name, role}, process.env.SECRET_KEY, {expiresIn:'24h'});
 }
 
 authRouterGoogle.get('/login/failed', (req, res)=>{
@@ -33,7 +33,6 @@ authRouterGoogle.get('/discord', passport.authenticate('discord'));
 authRouterGoogle.get('/discord/redirect', passport.authenticate('discord',{
     failureRedirect:'/login/failed',
 }), function(req, res){
-    console.log(req.user)
     const token=generateJwt(req.user.id,req.user.email,req.user.name,req.user.role)
     res.redirect('http://localhost:3000/mypage/'+token)
 })

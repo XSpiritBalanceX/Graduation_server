@@ -50,7 +50,6 @@ passport.use(new DiscordStrategy({
     scope: scopes
 },
     async function(accessToken, refreshToken, profile, done) {
-        console.log(profile)
            let user=await MyUsers.findOne({where:{email: profile.email}});
             if(!user){
                 await MyUsers.create({email: profile.email,name:profile.username,  })
