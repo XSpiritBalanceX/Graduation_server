@@ -14,7 +14,7 @@ const DISCORD_CLIENT_SECRET=process.env.DISCORD_CLIENT_SECRET;
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret:GOOGLE_CLIENT_SECRET,
-    callbackURL:'http://localhost:5000/auth/google/callback'
+    callbackURL:'https://server-production-5ca0.up.railway.app/auth/google/callback'
 },
     async function(accessToken, refreshToken, profile, done) {
           let user=await MyUsers.findOne({where:{email: profile._json.email}});
@@ -29,7 +29,7 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_CLIENT_ID,
     clientSecret:FACEBOOK_CLIENT_SECRET,
-    callbackURL:'http://localhost:5000/auth/redirect/facebook',
+    callbackURL:'https://server-production-5ca0.up.railway.app/auth/redirect/facebook',
     profileFields: ['id', 'displayName', 'name', 'emails']
 },
     async function(accessToken, refreshToken, profile, done) {
@@ -46,7 +46,7 @@ const scopes = ['identify', 'email',  'guilds.join'];
 passport.use(new DiscordStrategy({
     clientID: DISCORD_CLIENT_ID,
     clientSecret:DISCORD_CLIENT_SECRET,
-    callbackURL:'http://localhost:5000/auth/discord/redirect',
+    callbackURL: '/auth/discord/redirect' ,
     scope: scopes
 },
     async function(accessToken, refreshToken, profile, done) {

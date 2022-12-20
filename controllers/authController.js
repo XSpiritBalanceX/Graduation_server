@@ -2,7 +2,6 @@ const {MyUsers}=require('../dataBase/descriptionDB');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
 const ApiError=require('../error/ApiError');
-const passport=require('passport');
 
 const generateJwt=(id,email,name, role)=>{
     return jwt.sign({id,email,name, role}, process.env.SECRET_KEY, {expiresIn:'24h'});
@@ -57,11 +56,6 @@ class AuthController{
      const token=generateJwt(req.user.id, req.user.email, req.user.name,req.user.role);
      res.json({token})
    }
-
-   async test(req, res, next){
-    console.log(req)
-    
-  }
 
 }
 
