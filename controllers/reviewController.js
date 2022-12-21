@@ -1,4 +1,4 @@
-const {MyReview, MyUsers, MyComments, MyRating}=require('../dataBase/descriptionDB');
+const {MyReview, MyUsers, MyComments, MyRating, MyTags}=require('../dataBase/descriptionDB');
 const ApiError = require('../error/ApiError');
 const {ref,uploadBytes, listAll}=require('firebase/storage')
 const storage=require('../firebase')
@@ -56,6 +56,7 @@ class ReviewController{
         try{
             let {name,useremail, title, groupn, teg,rate, text }=req.body;
             let file=req.file;
+            await MyTags.create({value:teg, "createdAt":new Date(), "updatedAt":new Date()})
             const imageRef=ref(storage, file.originalname);
             let urlPict=`https://firebasestorage.googleapis.com/v0/b/${imageRef._location.bucket}/o/${file.originalname}?alt=media`
             const metatype = { contentType: file.mimetype, name: file.originalname };
@@ -68,7 +69,7 @@ class ReviewController{
             let userName=await MyUsers.findOne({where:{email:useremail}, attributes:['name']});
             await MyReview.create({name,rate,useremail,date:today,text,"createdAt":new Date(), "updatedAt":new Date(),title, groupn, teg, namepict:urlPict, nameuser:userName.dataValues.name});
                       
-            return res.json({message:'You have successfully written your review'});
+            return res.json({message:'You have successfully written your review'}); 
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
         }
@@ -155,6 +156,15 @@ class ReviewController{
             await MyReview.destroy({where:{id}});
             await MyComments.destroy({where:{namereview:title}})
             return res.json({message:`Review ${title} was deleted`});
+        }catch(err){
+            return next(ApiError.internal('Something went wrong, please try again'));
+        }
+    } 
+    async getTags(req, res, next){
+        try{ 
+            let tags= await MyTags.findAll()  
+            let retTags=tags.map(el=>el.value).join().split(',').filter((el, ind, arr)=>{return arr.indexOf(el)===ind})
+            return res.json(retTags);
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
         }
