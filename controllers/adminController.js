@@ -1,4 +1,4 @@
-const {MyUsers, MyReview}=require('../dataBase/descriptionDB');
+const {MyUsers, MyReview, MyComments, MyRating}=require('../dataBase/descriptionDB');
 const ApiError=require('../error/ApiError');
 const jwt=require('jsonwebtoken');
 
@@ -65,6 +65,8 @@ class AdminController{
       try{
           let {id, email}=req.body;
           await MyReview.destroy({where:{useremail:email}});
+          await MyComments.destroy({where:{useremail:email}});
+          await MyRating.destroy({where:{useremail:email}});
           await MyUsers.destroy({where:{id}});
           return res.json({message:`User ${email} was deleted`});
       }catch(err){
