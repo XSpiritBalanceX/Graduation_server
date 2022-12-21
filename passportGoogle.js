@@ -14,7 +14,7 @@ const DISCORD_CLIENT_SECRET=process.env.DISCORD_CLIENT_SECRET;
 passport.use(new GoogleStrategy({
     clientID: GOOGLE_CLIENT_ID,
     clientSecret:GOOGLE_CLIENT_SECRET,
-    callbackURL:/* 'https://server-production-5ca0.up.railway.app/auth/google/callback' */'http://localhost:5000/auth/google/callback'
+    callbackURL:'https://server-production-5ca0.up.railway.app/auth/google/callback'
 },
     async function(accessToken, refreshToken, profile, done) {
           let user=await MyUsers.findOne({where:{email: profile._json.email}});
