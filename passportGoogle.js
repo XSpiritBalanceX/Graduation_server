@@ -46,7 +46,7 @@ const scopes = ['identify', 'email',  'guilds.join'];
 passport.use(new DiscordStrategy({
     clientID: DISCORD_CLIENT_ID,
     clientSecret:DISCORD_CLIENT_SECRET,
-    callbackURL: /* 'https://server-production-5ca0.up.railway.app/auth/discord/redirect' */ 'http://localhost:5000/auth/discord/redirect',
+    callbackURL:  'https://server-production-5ca0.up.railway.app/auth/discord/redirect'  /* 'http://localhost:5000/auth/discord/redirect' */,
     scope: scopes
 },
     async function(accessToken, refreshToken, profile, done) {
