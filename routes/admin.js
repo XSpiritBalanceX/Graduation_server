@@ -7,5 +7,6 @@ adminRouter.get('/',checkRole('ADMIN'), adminController.getAllUsers );
 adminRouter.get('/block', adminController.blockUser );
 adminRouter.get('/giveadmin', adminController.giveAdmin );
 adminRouter.get('/showuser', adminController.showUserPage );
+adminRouter.put('/delete', adminController.deleteUser );
 
 module.exports=adminRouter;

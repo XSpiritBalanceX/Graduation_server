@@ -41,7 +41,6 @@ class ReviewController{
             let {id}=req.query;
             let oneReview=await MyReview.findAll({where:{id}}); 
             let getTitle=await MyReview.findOne({where:{id}});
-            
             let getRating=await MyRating.findAll({where:{namereview:getTitle.title}, attributes:['value']});
             if(!getRating){
                 return res.json({oneReview});
@@ -87,10 +86,7 @@ class ReviewController{
         }
     }  
     async getComments(req, res, next){
-        try{
-            /* let {namereview}=req.query;  
-            console.log(req.query)        
-            let comments=await MyComments.findAll({attributes:['namereview']===namereview});  */ 
+        try{ 
             let comments=await MyComments.findAll(); 
             return res.json(comments);
         }catch(err){
@@ -122,7 +118,8 @@ class ReviewController{
             let file=req.file;
             let editReview=await MyReview.findOne({where:{id}}); 
             if(editReview.title!==title){
-                await MyRating.update({namereview:title}, {where:{namereview:editReview.title}})
+                await MyRating.update({namereview:title}, {where:{namereview:editReview.title}});
+                await MyComments.update({namereview:title}, {where:{namereview:editReview.title}});
             }               
             if(file!==undefined){
                 const imageRef=ref(storage, file.originalname);
@@ -155,7 +152,8 @@ class ReviewController{
         try{
             let {id, title}=req.body;
             await MyRating.destroy({where:{namereview:title}});
-            await MyReview.destroy({where:{id}})
+            await MyReview.destroy({where:{id}});
+            await MyComments.destroy({where:{namereview:title}})
             return res.json({message:`Review ${title} was deleted`});
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));

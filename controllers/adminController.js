@@ -1,4 +1,4 @@
-const {MyUsers}=require('../dataBase/descriptionDB');
+const {MyUsers, MyReview}=require('../dataBase/descriptionDB');
 const ApiError=require('../error/ApiError');
 const jwt=require('jsonwebtoken');
 
@@ -51,16 +51,26 @@ class AdminController{
          return next(ApiError.internal('Something went wrong, please try again'));
        }  
    }
-   async showUserPage (req, res, next){
-    try{ 
-        let {id,email}=req.query;
-        const user=await MyUsers.findOne({where:{id}});
-        const token=generateJwt(user.id,user.email, user.name,user.role);
-        return res.json({email:user.email, name:user.name, token});
-   }catch(e){
-     return next(ApiError.internal('Something went wrong, please try again'));
-   }  
-}
+    async showUserPage (req, res, next){
+      try{ 
+          let {id,email}=req.query;
+          const user=await MyUsers.findOne({where:{id}});
+          const token=generateJwt(user.id,user.email, user.name,user.role);
+          return res.json({email:user.email, name:user.name, token});
+        }catch(e){
+          return next(ApiError.internal('Something went wrong, please try again'));
+        }  
+    }
+    async deleteUser(req, res, next){
+      try{
+          let {id, email}=req.body;
+          await MyReview.destroy({where:{useremail:email}});
+          await MyUsers.destroy({where:{id}});
+          return res.json({message:`User ${email} was deleted`});
+      }catch(err){
+          return next(ApiError.internal('Something went wrong, please try again'));
+      }
+    } 
 }
 
 module.exports = new AdminController();
