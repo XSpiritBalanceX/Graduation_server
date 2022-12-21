@@ -21,9 +21,11 @@ authRouterGoogle.get('/logout', (req,res)=>{
 })
 authRouterGoogle.get('/google', passport.authenticate('google', {scope:['profile', 'email']}));
 authRouterGoogle.get('/google/callback', passport.authenticate('google',{
-    successRedirect:'http://localhost:3000/',
     failureRedirect:'/login/failed'
-}))
+}), function(req, res){
+    const token=generateJwt(req.user.id,req.user.email,req.user.name,req.user.role)
+    res.redirect('http://localhost:3000/auth/'+token)
+})
 authRouterGoogle.get('/facebook', passport.authenticate('facebook',{scope:['email']}));
 authRouterGoogle.get('/redirect/facebook', passport.authenticate('facebook',{
     successRedirect:'http://localhost:3000/',
