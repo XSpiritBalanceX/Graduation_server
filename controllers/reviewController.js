@@ -169,6 +169,15 @@ class ReviewController{
             return next(ApiError.internal('Something went wrong, please try again'));
         }
     } 
+    async getAllReview(req, res, next){
+        try{
+            let review=await MyReview.findAll();
+            let retuReview=review.slice([review.length-1[10]])             
+            return res.json(retuReview);
+        }catch(err){
+            return next(ApiError.internal('Something went wrong, please try again'));
+        }
+    }
     
 
     async getPicture(req, res, next){

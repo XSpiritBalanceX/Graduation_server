@@ -12,7 +12,7 @@ authRouterGoogle.get('/login/failed', (req, res)=>{
 
 authRouterGoogle.get('/logout', (req,res)=>{
     req.logout();
-    res.redirect('http://localhost:3000/')
+    res.redirect('https://client-production-8862.up.railway.app/')
 })
 authRouterGoogle.get('/google', passport.authenticate('google', {scope:['profile', 'email']}));
 authRouterGoogle.get('/google/callback', passport.authenticate('google',{
