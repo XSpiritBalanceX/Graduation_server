@@ -18,5 +18,6 @@ reviewRouter.put('/delete', reviewController.deleteReview);
 reviewRouter.get('/gettags',reviewController.getTags);
 reviewRouter.get('/getmain',reviewController.getAllReview);
 reviewRouter.get('/getall',reviewController.getAllItems);
+reviewRouter.get('/getrating',reviewController.getAllRating);
 
 module.exports=reviewRouter;
