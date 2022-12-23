@@ -1,10 +1,34 @@
-const {MyReview, MyUsers, MyComments, MyRating, MyTags}=require('../dataBase/descriptionDB');
+const {MyReview, MyUsers, MyComments, MyRating, MyTags, MyBooks, MyGame, MyMovies, MySeries}=require('../dataBase/descriptionDB');
 const ApiError = require('../error/ApiError');
 const {ref,uploadBytes, listAll}=require('firebase/storage')
 const storage=require('../firebase')
 
 
 class ReviewController{
+    async getAllItems(req, res, next){
+        try{
+            let {lang}=req.query;
+            let everyBook;
+            let everyGame;
+            let everyMovie;
+            let everySeries;
+            if(lang==='ru-RU'){
+                everyBook=await MyBooks.findAll({attributes:['nameru']});
+                everyGame=await MyGame.findAll({attributes:['nameru']});
+                everyMovie=await MyMovies.findAll({attributes:['nameru']});
+                everySeries=await MySeries.findAll({attributes:['nameru']});
+            }else{
+                everyBook=await MyBooks.findAll({attributes:['nameen']});
+                everyGame=await MyGame.findAll({attributes:['nameen']});
+                everyMovie=await MyMovies.findAll({attributes:['nameen']});
+                everySeries=await MySeries.findAll({attributes:['nameen']}); 
+            }  
+             
+            return res.json({everyBook, everyGame, everyMovie, everySeries}); 
+        }catch(err){
+            return next(ApiError.internal('Something went wrong, please try again'));
+        }
+    }
     async getUserReview(req, res, next){
         try{
             let {useremail}=req.query;
@@ -172,8 +196,14 @@ class ReviewController{
     async getAllReview(req, res, next){
         try{
             let review=await MyReview.findAll();
-            let retuReview=review.slice([review.length-1[10]])             
-            return res.json(retuReview);
+            let retuReview=review.slice(-10);
+            //let test=await MyRating.findAll({where:{namereview:review.title}}) 
+            let arr=[];
+            review.forEach(el=>{
+                arr.push(el.title)
+            }) 
+            let test=await MyRating.findAll({where:{namereview:arr}, attributes:['namereview', 'value']})        
+            return res.json({retuReview, rating:test});
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
         }

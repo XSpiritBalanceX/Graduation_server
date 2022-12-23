@@ -17,5 +17,6 @@ reviewRouter.post('/editreview',upload.single('pic'), reviewController.editRevie
 reviewRouter.put('/delete', reviewController.deleteReview);
 reviewRouter.get('/gettags',reviewController.getTags);
 reviewRouter.get('/getmain',reviewController.getAllReview);
+reviewRouter.get('/getall',reviewController.getAllItems);
 
 module.exports=reviewRouter;
