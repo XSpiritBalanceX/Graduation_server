@@ -196,8 +196,10 @@ class ReviewController{
     async getAllReview(req, res, next){
         try{
             let review=await MyReview.findAll();
-            let retuReview=review.slice(-10);       
-            return res.json({retuReview});
+            let retuReview=review.slice(-10);
+            let reviewHigh=await MyReview.findAll({where:{rate:'10'}}); 
+            let revieHighRat= reviewHigh.slice(-10)     
+            return res.json({retuReview, revieHighRat});
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
         }
@@ -211,7 +213,7 @@ class ReviewController{
             nameReview.forEach(el=>{
                 likes.push(el.title)
             })
-            let allLikes=await MyRating.findAll({where:{namereview:likes}, attributes:['like']})       
+            let allLikes=await MyRating.findAll({where:{namereview:likes}, attributes:['like']})      
             return res.json({ratingItem, allLikes});
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
