@@ -65,7 +65,7 @@ class ReviewController{
             let {id}=req.query;
             let oneReview=await MyReview.findAll({where:{id}}); 
             let getTitle=await MyReview.findOne({where:{id}});
-            let getRating=await MyRating.findAll({where:{namereview:getTitle.title}, attributes:['value']});
+            let getRating=await MyRating.findAll({where:{namereview:getTitle.title}, attributes:['value','like']});
             if(!getRating){
                 return res.json({oneReview});
             }else{
@@ -204,9 +204,15 @@ class ReviewController{
     }
     async getAllRating(req, res, next){
         try{
-            let {name}=req.query
-            let ratingItem=await MyRating.findAll({where:{namereview:name}, attributes:['namereview', 'value']})        
-            return res.json(ratingItem);
+            let {name, username}=req.query
+            let ratingItem=await MyRating.findAll({where:{namereview:name}, attributes:['namereview', 'value']});
+            let nameReview=await MyReview.findAll({where:{nameuser:username}, attributes:['title']});
+            let likes=[];
+            nameReview.forEach(el=>{
+                likes.push(el.title)
+            })
+            let allLikes=await MyRating.findAll({where:{namereview:likes}, attributes:['like']})       
+            return res.json({ratingItem, allLikes});
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
         }
