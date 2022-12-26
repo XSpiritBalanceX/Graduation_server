@@ -198,8 +198,15 @@ class ReviewController{
             let review=await MyReview.findAll();
             let retuReview=review.slice(-10);
             let reviewHigh=await MyReview.findAll({where:{rate:'10'}}); 
-            let revieHighRat= reviewHigh.slice(-10)     
-            return res.json({retuReview, revieHighRat});
+            let revieHighRat= reviewHigh.slice(-10);
+            let comments=await MyComments.findAll();
+            let reviewWiComm=review.slice();
+            /* reviewWiComm.forEach(el=>{
+                if(el.title===comments.namereview){
+                    reviewWiComm.comment=comments.text
+                }
+            }) */  
+            return res.json({retuReview, revieHighRat, review, comments});
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
         }
