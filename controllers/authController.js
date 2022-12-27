@@ -17,8 +17,12 @@ class AuthController{
             }
     
             const candidate=await MyUsers.findOne({where:{email}});
+            const candidateName=await MyUsers.findOne({where:{name}});
             if(candidate){
                 return next(ApiError.badRequest('This user already exists'));
+            }
+            if(candidateName){
+                return next(ApiError.badRequest('This name already exists'));
             }
             const hashPassword= await bcrypt.hash(password, 5);
             const today=new Date().toLocaleString();
