@@ -145,7 +145,10 @@ class ReviewController{
             if(editReview.title!==title){
                 await MyRating.update({namereview:title}, {where:{namereview:editReview.title}});
                 await MyComments.update({namereview:title}, {where:{namereview:editReview.title}});
-            }               
+            } 
+            if(editReview.teg!==teg){
+                await MyTags.create(({value:teg, "createdAt":new Date(), "updatedAt":new Date()}))
+            }              
             if(file!==undefined){
                 const imageRef=ref(storage, file.originalname);
                 let urlPict=`https://firebasestorage.googleapis.com/v0/b/${imageRef._location.bucket}/o/${file.originalname}?alt=media`
@@ -163,10 +166,7 @@ class ReviewController{
             editReview.groupn=groupn;
             editReview.teg=teg;
             editReview.rate=rate;
-            if(text!==''){
-                editReview.text=text;
-            }
-             
+            editReview.text=text;             
             await editReview.save();        
             return res.json({ message:'You have successfully changed your review'});
         }catch(err){
@@ -200,12 +200,7 @@ class ReviewController{
             let reviewHigh=await MyReview.findAll({where:{rate:'10'}}); 
             let revieHighRat= reviewHigh.slice(-10);
             let comments=await MyComments.findAll();
-            let reviewWiComm=review.slice();
-            /* reviewWiComm.forEach(el=>{
-                if(el.title===comments.namereview){
-                    reviewWiComm.comment=comments.text
-                }
-            }) */  
+            let reviewWiComm=review.slice();  
             return res.json({retuReview, revieHighRat, review, comments});
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
