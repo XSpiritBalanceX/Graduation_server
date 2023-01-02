@@ -65,7 +65,7 @@ class ReviewController{
             let {id}=req.query;
             let oneReview=await MyReview.findAll({where:{id}}); 
             let getTitle=await MyReview.findOne({where:{id}});
-            let getRating=await MyRating.findAll({where:{namereview:getTitle.title}, attributes:['value','like']});
+            let getRating=await MyRating.findAll({where:{namereview:getTitle.title}, attributes:['value','like', 'useremail']});
             if(!getRating){
                 return res.json({oneReview});
             }else{
