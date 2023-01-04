@@ -109,7 +109,7 @@ const MyRating=sequelize.define('rating', {
 })
 const MyTags=sequelize.define('tags', {
     id:{type:DataTypes.INTEGER, autoIncrement:true, primaryKey:true},
-    value:{type:DataTypes.STRING, unique:true}
+    value:{type:DataTypes.STRING}
 })
 
 module.exports={MyMovies, MySeries, MyGame, MyBooks,MyUsers, MyComments, MyReview, MyRating, MyTags};
