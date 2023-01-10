@@ -3,7 +3,7 @@ const {Sequelize}=require('sequelize');
 module.exports=new Sequelize(
     'railway' ,
      'postgres' ,
-     'pfMYfubSfOdqlXfWZAO7' ,
+     'JavwHeRSduY3stUIsLow' ,
     {
         dialect:'postgres',
         host:"containers-us-west-137.railway.app" ,
