@@ -4,13 +4,8 @@ const ApiError=require('../error/ApiError');
 class BooksController{
     async getAllBooks(req, res, next){
         try{
-            let {lang}=req.query;
-            let allBooks;
-            if(lang==='ru-RU'){
-                allBooks=await MyBooks.findAll({attributes:['id', 'nameru', 'data', 'genreru', 'autorru', 'summaryru','rate', 'url']});
-            }else{
-                allBooks=await MyBooks.findAll({attributes:['id', 'nameen', 'data', 'genreen', 'autoren', 'summaryen','rate', 'url']}); 
-            }            
+            let allBooks=await MyBooks.findAll({attributes:['id', 'name', 'data', 'genre', 'autor', 'summary','rate', 'url']});
+                       
             return res.json(allBooks);
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
@@ -19,13 +14,9 @@ class BooksController{
 
     async getOneBook(req, res, next){
         try{
-            let {lang,id}=req.query;
-            let oneBook;
-            if(lang==='ru-RU'){
-                oneBook=await MyBooks.findAll({where:{id},attributes:['id', 'nameru', 'data', 'genreru', 'autorru', 'summaryru','rate', 'url']});
-            }else{
-                oneBook=await MyBooks.findAll({where:{id},attributes:['id', 'nameen', 'data', 'genreen', 'autoren', 'summaryen','rate', 'url']}); 
-            }  
+            let {id}=req.query;
+            let oneBook=await MyBooks.findAll({where:{id},attributes:['id', 'name', 'data', 'genre', 'autor', 'summary','rate', 'url']});
+             
                      
             return res.json(oneBook);
         }catch(err){

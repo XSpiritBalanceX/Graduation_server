@@ -7,23 +7,11 @@ const storage=require('../firebase')
 class ReviewController{
     async getAllItems(req, res, next){
         try{
-            let {lang}=req.query;
-            let everyBook;
-            let everyGame;
-            let everyMovie;
-            let everySeries;
-            if(lang==='ru-RU'){
-                everyBook=await MyBooks.findAll({attributes:['nameru']});
-                everyGame=await MyGame.findAll({attributes:['nameru']});
-                everyMovie=await MyMovies.findAll({attributes:['nameru']});
-                everySeries=await MySeries.findAll({attributes:['nameru']});
-            }else{
-                everyBook=await MyBooks.findAll({attributes:['nameen']});
-                everyGame=await MyGame.findAll({attributes:['nameen']});
-                everyMovie=await MyMovies.findAll({attributes:['nameen']});
-                everySeries=await MySeries.findAll({attributes:['nameen']}); 
-            }  
-             
+              let  everyBook=await MyBooks.findAll({attributes:['name']});
+              let  everyGame=await MyGame.findAll({attributes:['name']});
+              let  everyMovie=await MyMovies.findAll({attributes:['name']});
+              let  everySeries=await MySeries.findAll({attributes:['name']});
+            
             return res.json({everyBook, everyGame, everyMovie, everySeries}); 
         }catch(err){
             return next(ApiError.internal('Something went wrong, please try again'));
