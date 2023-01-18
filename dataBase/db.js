@@ -1,12 +1,13 @@
+require('dotenv').config()
 const {Sequelize}=require('sequelize');
 
 module.exports=new Sequelize(
-    'railway' ,
+     process.env.DB_PG ,
      'postgres' ,
-     'JavwHeRSduY3stUIsLow' ,
+     process.env.DB_PASSWORD ,
     {
         dialect:'postgres',
-        host:"containers-us-west-137.railway.app" ,
-        port: 7845 
+        host: process.env.DB_HOST ,
+        port: process.env.DB_PORT 
     }
 )
